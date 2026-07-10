@@ -1,0 +1,49 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+*.egg
+.venv/
+venv/
+env/
+
+# Reasonix / Codex internal
+.agents/
+.reasonix/
+.deepseek/
+
+# Reference files (copyrighted — see docs/references.md)
+reference/*.pdf
+reference/*.txt
+
+# Internal review / working notes
+notes/
+
+# Superseded drafts (content merged into SKILL.md)
+Project Cybersyn.md
+Project Cybersyn (重构版).md
+
+# Tool output artifacts
+tools/classify_out.json
+cybersyn_state.json
+cybersyn_archive/
+
+# Sensitive files
+*.pem
+*.key
+.env
+.env.*
+credentials*
