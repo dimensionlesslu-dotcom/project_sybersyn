@@ -7,6 +7,8 @@ description: 分级闭环控制系统。用于需多轮迭代、质量把关、�
 
 > 符号 e/k/τ/σ/ε/F 在文本/代码任务中是隐喻，非可测标量——以"定性代理"为准，数值仅为可调经验默认。
 
+> English version: [SKILL.en.md](SKILL.en.md) · 英文版见 [SKILL.en.md](SKILL.en.md)
+
 ---
 
 ## 宿主规则优先

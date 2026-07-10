@@ -6,6 +6,7 @@
 - **许可证**：代码许可从 MIT 改为 **GPL-3.0**（文档仍为 CC BY 4.0）
 
 ### 新增
+- **英文版 SKILL.en.md**：SKILL.md 的完整英译，供英文 Agent 导入（含英文触发词）；中英文版互相交叉链接
 - `cybersyn_state.py next-round` 子命令：CLI 可推进迭代轮次（自动执行 Nmax 安全闸、上一轮标记 completed）——此前多轮迭代无法通过 CLI 驱动
 - GitHub Actions CI：smoke test 在 Linux + Windows × Python 3.9/3.13 上运行
 - `examples/`：L1 极简路径与 L3 全流程运行示例

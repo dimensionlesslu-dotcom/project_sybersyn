@@ -75,7 +75,8 @@ git clone https://github.com/dimensionlesslu-dotcom/project_sybersyn.git
 
 将 `SKILL.md` 的内容作为系统指令或 Skill 文件导入。核心文件：
 
-- **[SKILL.md](SKILL.md)** — 操作核心（你只需要这个）
+- **[SKILL.md](SKILL.md)** — 操作核心，中文（你只需要这个）
+- **[SKILL.en.md](SKILL.en.md)** — Operational core, English (import this one if your agent works in English)
 - **[examples/](examples/)** — L1 / L3 运行示例
 - **[docs/theory.md](docs/theory.md)** — 理论基础（想了解"为什么"时读）
 - **[docs/references.md](docs/references.md)** — 参考文献
@@ -99,7 +100,8 @@ git clone https://github.com/dimensionlesslu-dotcom/project_sybersyn.git
 
 ```
 project_sybersyn/
-├── SKILL.md                  # 操作核心（Skill 本体）
+├── SKILL.md                  # 操作核心（Skill 本体，中文）
+├── SKILL.en.md               # 操作核心（英文版）
 ├── README.md                 # 你正在读的这个
 ├── LICENSE                   # GPL-3.0（代码）
 ├── REVIEWS.md                # 审核意见整合
