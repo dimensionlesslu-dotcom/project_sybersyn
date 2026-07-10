@@ -14,6 +14,11 @@ smoke_test.py — Project Cybersyn 工具链冒烟测试
 import json, os, subprocess, sys, tempfile, shutil
 from pathlib import Path
 
+# Windows 控制台/管道默认 GBK，统一 UTF-8 输出避免乱码
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
+
 TOOLS = Path(__file__).parent
 PASS, FAIL = 0, 0
 TMP = TOOLS / "_smoke_tmp"
@@ -30,8 +35,9 @@ def teardown():
 
 
 def run(*args, **kw):
-    """运行工具，返回 (returncode, stdout, stderr)。"""
-    r = subprocess.run([sys.executable, *args], capture_output=True, text=True, cwd=str(TOOLS), **kw)
+    """运行工具，返回 (returncode, stdout, stderr)。工具统一输出 UTF-8。"""
+    r = subprocess.run([sys.executable, *args], capture_output=True, text=True,
+                       encoding="utf-8", errors="replace", cwd=str(TOOLS), **kw)
     return r.returncode, r.stdout.strip(), r.stderr.strip()
 
 
@@ -105,7 +111,7 @@ def test_s1_l1_minimal():
 
     # 10. summary
     rc10, out10, _ = run("cybersyn_state.py", "summary")
-    check("S1.10 summary → contains task name", "fix typo" in out10 or True)  # GBK may garble but json path works
+    check("S1.10 summary → contains task name", "fix typo" in out10, out10[:80])
 
     passed = PASS - p0
     failed = FAIL - f0
@@ -170,37 +176,37 @@ def test_s2_l3_full():
     # 7. audit trigger → should trigger (round 3, every 3)
     rc7, out7, _ = run("audit_trigger.py", "--state", state_path, "--format", "json")
     d7 = json_out(out7)
-    check("S2.7 audit trigger → true (round=3, every=3)", d7 and d7.get("trigger") == True, str(d7)[:120] if d7 else "")
+    check("S2.8 audit trigger → true (round=3, every=3)", d7 and d7.get("trigger") == True, str(d7)[:120] if d7 else "")
 
     # 8. audit auto-conclude → maintain
     rc8, out8, _ = run("audit_trigger.py", "--state", state_path, "--auto-conclude", "--format", "json")
     d8 = json_out(out8)
-    check("S2.8 audit auto-conclude → maintain", d8 and d8.get("recommended_conclusion") == "maintain",
+    check("S2.9 audit auto-conclude → maintain", d8 and d8.get("recommended_conclusion") == "maintain",
           str(d8.get("recommended_conclusion")) if d8 else "")
 
     # 9. apply-audit
     rc9, out9, _ = run("cybersyn_state.py", "apply-audit", "--conclusion", "maintain")
-    check("S2.9 apply-audit maintain → ok", rc9 == 0, out9)
+    check("S2.10 apply-audit maintain → ok", rc9 == 0, out9)
 
     # 10. handoff report (even though converged, should still generate)
     rc10, out10, _ = run("handoff_report.py", "--state", state_path, "--format", "json")
     d10 = json_out(out10)
-    check("S2.10 handoff → has task", d10 and d10.get("task") == "refactor auth", str(d10)[:80] if d10 else "")
+    check("S2.11 handoff → has task", d10 and d10.get("task") == "refactor auth", str(d10)[:80] if d10 else "")
 
     # 11. diversity generator
     rc11, out11, _ = run("diversity_generator.py", "--task", "refactor auth", "--strategies", "3", "--format", "json")
     d11 = json_out(out11)
-    check("S2.11 diversity → 3 strategies", d11 and len(d11.get("strategies", [])) == 3)
-    check("S2.12 diversity → has divergence_matrix", d11 and "divergence_matrix" in d11)
+    check("S2.12 diversity → 3 strategies", d11 and len(d11.get("strategies", [])) == 3)
+    check("S2.13 diversity → has divergence_matrix", d11 and "divergence_matrix" in d11)
 
     # 12. summary + archive
     rc12, out12, _ = run("cybersyn_state.py", "summary")
-    check("S2.12 summary → non-empty", len(out12) > 10)
+    check("S2.14 summary → non-empty", len(out12) > 10)
 
     rc13, out13, _ = run("cybersyn_state.py", "archive", "--target", str(TMP / "smoke_archive"))
-    check("S2.13 archive → ok", rc13 == 0, out13)
+    check("S2.15 archive → ok", rc13 == 0, out13)
     archive_file = TMP / "smoke_archive" / "archive.ndjson"
-    check("S2.14 archive.ndjson exists", archive_file.exists())
+    check("S2.16 archive.ndjson exists", archive_file.exists())
 
     passed = PASS - p0
     failed = FAIL - f0
@@ -299,7 +305,7 @@ def test_s4_edge_cases():
         "--data", '{"e_wrong":[{"desc":"critical bug in token refresh","severity":"critical"}],"e_missing":[],"e_extra":[],"deviation_type":"A"}')
     rc2, out2, _ = run("cybersyn_state.py", "query", "--pattern", "token", "--scope", "rounds", "--format", "json")
     d2 = json_out(out2)
-    check("S4.2 query 'token' → 1 match", d2 and len(d2.get("matches", [])) >= 1, str(d2)[:80] if d2 else "")
+    check("S4.2b query 'token' → 1 match", d2 and len(d2.get("matches", [])) >= 1, str(d2)[:80] if d2 else "")
 
     # ---- 4.3 archive + overwrite ----
     rc3, _, _ = run("cybersyn_state.py", "archive", "--target", str(TMP / "smoke_archive2"))
@@ -369,6 +375,49 @@ def test_s4_edge_cases():
 
 
 # ═══════════════════════════════════════════════════════════════
+# S5  轮次推进与重置: next-round / reset
+# ═══════════════════════════════════════════════════════════════
+def test_s5_round_lifecycle():
+    print("\n── S5 next-round / reset ──")
+    global PASS, FAIL
+    p0, f0 = PASS, FAIL
+
+    state_path = str(TMP / "smoke_s5.json")
+    os.environ["CYBERSYN_STATE"] = state_path
+    run("cybersyn_state.py", "init", "--level", "L3", "--task", "round lifecycle", "--output", state_path)
+
+    # 5.1 next-round 推进
+    rc1, out1, err1 = run("cybersyn_state.py", "next-round")
+    check("S5.1 next-round → ok", rc1 == 0, err1)
+    d1 = json.loads(Path(state_path).read_text("utf-8"))
+    check("S5.2 round == 1", d1.get("round") == 1)
+
+    # 5.2 再推进一轮，上一轮标记 completed
+    rc2, _, _ = run("cybersyn_state.py", "next-round")
+    d2 = json.loads(Path(state_path).read_text("utf-8"))
+    check("S5.3 round == 2", d2.get("round") == 2)
+    check("S5.4 previous round stage → completed", d2["rounds"][0].get("stage") == "completed")
+
+    # 5.3 Nmax 边界: nmax=2 时第 3 轮禁止
+    d2["nmax"] = 2
+    Path(state_path).write_text(json.dumps(d2, ensure_ascii=False), "utf-8")
+    rc3, _, err3 = run("cybersyn_state.py", "next-round")
+    check("S5.5 next-round beyond nmax → SafetyBoundaryError", rc3 != 0, f"rc={rc3}")
+
+    # 5.4 reset: 备份并重建
+    rc4, out4, err4 = run("cybersyn_state.py", "reset")
+    check("S5.6 reset → ok", rc4 == 0, err4)
+    d4 = json.loads(Path(state_path).read_text("utf-8"))
+    check("S5.7 reset → round 0, rounds empty", d4.get("round") == 0 and d4.get("rounds") == [])
+    check("S5.8 reset → task preserved", d4.get("task") == "round lifecycle")
+    check("S5.9 reset → backup created", (TMP / "smoke_s5.json.bak").exists())
+
+    passed = PASS - p0
+    failed = FAIL - f0
+    print(f"  S5: {passed} passed, {failed} failed")
+
+
+# ═══════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     setup()
     try:
@@ -376,6 +425,7 @@ if __name__ == "__main__":
         test_s2_l3_full()
         test_s3_error_paths()
         test_s4_edge_cases()
+        test_s5_round_lifecycle()
 
         print(f"\n{'='*50}")
         print(f"TOTAL: {PASS} passed, {FAIL} failed")

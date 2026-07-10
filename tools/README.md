@@ -1,6 +1,6 @@
 # Project Cybersyn — Companion Tools
 
-Python scripts that automate parts of the Project Cybersyn closed-loop control workflow. All tools are implemented, self-contained, and covered by `smoke_test.py` (55 checks).
+Python scripts that automate parts of the Project Cybersyn closed-loop control workflow. All tools are implemented, self-contained, and covered by `smoke_test.py` (64 checks, run in CI on Linux and Windows).
 
 ## Tools
 
@@ -24,7 +24,8 @@ cd tools
 python complexity_classify.py --task "refactor auth module" --files a.py b.py c.py --format json
 python cybersyn_state.py init --level L3 --task "refactor auth module"
 
-# 2. Each round: record feedback, check convergence, check audit trigger
+# 2. Each round: advance the round, record feedback, check convergence and audit trigger
+python cybersyn_state.py next-round
 python cybersyn_state.py update --stage feedback --data '{"e_missing":[],"e_extra":[],"e_wrong":[],"deviation_type":"A"}'
 python convergence_check.py --state cybersyn_state.json --format json
 python audit_trigger.py --state cybersyn_state.json --auto-conclude --format json

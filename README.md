@@ -6,8 +6,9 @@
 
 ---
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Docs: CC BY 4.0](https://img.shields.io/badge/Docs-CC%20BY%204.0-green.svg)](docs/LICENSE-CC-BY.md)
+[![CI](https://github.com/dimensionlesslu-dotcom/project_sybersyn/actions/workflows/smoke-test.yml/badge.svg)](https://github.com/dimensionlesslu-dotcom/project_sybersyn/actions/workflows/smoke-test.yml)
 [![Status: Stable](https://img.shields.io/badge/Status-Stable-brightgreen.svg)]()
 
 ---
@@ -75,6 +76,7 @@ git clone https://github.com/dimensionlesslu-dotcom/project_sybersyn.git
 将 `SKILL.md` 的内容作为系统指令或 Skill 文件导入。核心文件：
 
 - **[SKILL.md](SKILL.md)** — 操作核心（你只需要这个）
+- **[examples/](examples/)** — L1 / L3 运行示例
 - **[docs/theory.md](docs/theory.md)** — 理论基础（想了解"为什么"时读）
 - **[docs/references.md](docs/references.md)** — 参考文献
 
@@ -99,16 +101,20 @@ git clone https://github.com/dimensionlesslu-dotcom/project_sybersyn.git
 project_sybersyn/
 ├── SKILL.md                  # 操作核心（Skill 本体）
 ├── README.md                 # 你正在读的这个
-├── LICENSE                   # MIT（代码）
+├── LICENSE                   # GPL-3.0（代码）
 ├── REVIEWS.md                # 审核意见整合
 ├── CHANGELOG.md              # 版本变更
 ├── CONTRIBUTING.md           # 贡献指南
 ├── TOOLING_PLAN.md           # 配套工具规划（原始版）
 ├── TOOLING_PLAN_FINAL.md     # 配套工具规划（最终版）
+├── .github/workflows/        # CI（smoke test，Linux + Windows）
 ├── docs/
 │   ├── theory.md             # 理论基础
 │   ├── references.md         # 参考文献
 │   └── LICENSE-CC-BY.md      # CC BY 4.0（文档）
+├── examples/
+│   ├── L1-simple-task.md     # L1 极简路径示例
+│   └── L3-complex-task.md    # L3 全流程示例（含工具用法）
 ├── tools/                    # 配套 Python 工具（已实现，纯 stdlib）
 │   ├── README.md             # 工具说明与快速上手
 │   ├── cybersyn_state.py     # 迭代状态管理器
@@ -118,7 +124,7 @@ project_sybersyn/
 │   ├── audit_trigger.py      # 二阶审计触发器
 │   ├── handoff_report.py     # 移交报告生成器
 │   ├── diversity_generator.py# 研讨厅分歧生成器
-│   └── smoke_test.py         # 工具链冒烟测试（55 项）
+│   └── smoke_test.py         # 工具链冒烟测试（64 项）
 └── notes/                    # 内部审核笔记（不提交到 git）
 ```
 
@@ -143,10 +149,10 @@ Project Cybersyn 整合了以下控制论传统：
 
 ## 许可证 / License
 
-- **代码** (tools/ 下的 Python 脚本等): [MIT License](LICENSE)
+- **代码** (tools/ 下的 Python 脚本等): [GPL-3.0](LICENSE)
 - **文档** (SKILL.md, README.md, docs/ 下的内容等): [CC BY 4.0](docs/LICENSE-CC-BY.md)
 
-简单说：随便用、随便改，只要求署名。
+简单说：文档随便用、随便改，只要求署名；代码可自由使用、修改和分发，但衍生作品发布时须保持 GPL-3.0 开源。
 
 ---
 

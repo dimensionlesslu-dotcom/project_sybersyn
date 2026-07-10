@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0] — 2026-07-10
+
+### 变更
+- **许可证**：代码许可从 MIT 改为 **GPL-3.0**（文档仍为 CC BY 4.0）
+
+### 新增
+- `cybersyn_state.py next-round` 子命令：CLI 可推进迭代轮次（自动执行 Nmax 安全闸、上一轮标记 completed）——此前多轮迭代无法通过 CLI 驱动
+- GitHub Actions CI：smoke test 在 Linux + Windows × Python 3.9/3.13 上运行
+- `examples/`：L1 极简路径与 L3 全流程运行示例
+- SKILL.md 第 9 节：配套工具使用指引（原迭代日志顺延为第 10 节）
+
+### 修复
+- `cybersyn_state.py reset` 因 `FileExistsError` 始终失败的 bug
+- Windows 下工具输出为 GBK 导致的乱码：全部工具统一 UTF-8 输出
+- smoke test 中一处恒真断言（S1.10）与重复用例编号；新增 next-round/reset 覆盖（S5）
+
 ## [1.0.0] — 2026-07-10
 
 ### 新增

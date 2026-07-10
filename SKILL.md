@@ -146,7 +146,23 @@ description: 分级闭环控制系统。用于需多轮迭代、质量把关、�
 - **结构耦合**：自主对象（用户/团队/agent）的控制信号是扰动非指令——扰动→观察其结构响应→适配，胜过多轮硬指令。
 - **非线性**：出现饱和/死区/磁滞时线性公式失效，重新建模。
 
-## 9 迭代日志（L1 只填前 6 项）
+## 9 配套工具（可选，L2+ 推荐）
+
+若环境可执行 Python，可用 `tools/` 下的脚本把闭环状态持久化（跨轮/跨会话），替代纯上下文记忆：
+
+```
+complexity_classify.py --task "..." --files ...   # 第0节：复杂度判定
+cybersyn_state.py init --level L3 --task "..."    # 初始化状态文件
+cybersyn_state.py next-round                       # 每轮开始时推进（自动执行 Nmax 闸）
+cybersyn_state.py update --stage feedback --data . # 记录 e(t) 与偏差类型
+convergence_check.py --state ... --energy          # 测试₂：收敛判定
+audit_trigger.py --state ... --auto-conclude       # 二阶审计触发与结论推荐
+handoff_report.py --state ...                      # 向人移交时生成报告
+```
+
+工具仅是状态载体：判定偏差类型、下审计结论仍由 Agent 负责。无 Python 环境时按第 10 节日志格式在上下文中记录即可。用法详见 `tools/README.md`，完整示例见 `examples/`。
+
+## 10 迭代日志（L1 只填前 6 项）
 
 ```
 [轮次 #n | L?]

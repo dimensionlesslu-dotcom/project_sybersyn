@@ -14,6 +14,11 @@ import json
 import re
 import sys
 
+# Windows 控制台/管道默认 GBK，统一 UTF-8 输出避免乱码
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
+
 
 # ── 判定规则 ──────────────────────────────────────────────
 VAGUE_KEYWORDS = ["优化", "改进", "合理的", "适当的", "尽可能", "大概", "差不多", "改善", "提升"]

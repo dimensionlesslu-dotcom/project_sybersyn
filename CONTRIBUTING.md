@@ -56,4 +56,4 @@ Project Cybersyn 仍在进化中。如果你有：
 
 ## 许可证
 
-贡献的代码按 MIT License 授权，文档按 CC BY 4.0 授权。
+贡献的代码按 GPL-3.0 授权，文档按 CC BY 4.0 授权。

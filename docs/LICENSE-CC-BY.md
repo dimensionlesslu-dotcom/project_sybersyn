@@ -21,4 +21,4 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 
 This CC BY 4.0 license applies to the **documentation and Skill definition files** in this repository (including SKILL.md, README.md, docs/ and related markdown content).
 
-The **source code** in this repository (including Python scripts in tools/) is licensed separately under the MIT License — see the root LICENSE file.
+The **source code** in this repository (including Python scripts in tools/) is licensed separately under the GNU General Public License v3.0 — see the root LICENSE file.

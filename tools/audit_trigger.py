@@ -15,6 +15,11 @@ import json
 import os
 import sys
 
+# Windows 控制台/管道默认 GBK，统一 UTF-8 输出避免乱码
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
+
 
 def load_state(path: str) -> dict:
     if not os.path.exists(path):

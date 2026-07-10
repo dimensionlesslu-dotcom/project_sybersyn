@@ -28,6 +28,11 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+# Windows 控制台/管道默认 GBK，统一 UTF-8 输出避免乱码
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
+
 # ── 常量 ──────────────────────────────────────────────────
 STATE_SCHEMA_VERSION = "2.0"
 DEFAULT_STATE_PATH = "cybersyn_state.json"
@@ -172,7 +177,9 @@ def init_state(task: str, level: str, nmax: int = None, audit_every: int = None,
 
 # ── 轮次更新 ──────────────────────────────────────────────
 def new_round(state: dict) -> dict:
-    """在 rounds 末尾追加新轮次骨架，round 自增。"""
+    """在 rounds 末尾追加新轮次骨架，round 自增；上一轮标记为 completed。"""
+    if state["rounds"]:
+        state["rounds"][-1]["stage"] = "completed"
     state["round"] += 1
     state["verdict"] = "continuing"
     state["rounds"].append({
@@ -493,7 +500,7 @@ def reset_state(state: dict, hard: bool = False, path: str = None) -> dict:
     level = state["level"]
     nmax = state["nmax"]
     audit_every = state["audit_every"]
-    enforce = state.get("_enforce")
+    os.remove(path)
     return init_state(task, level, nmax, audit_every, enforce_from=None, path=path)
 
 
@@ -556,6 +563,9 @@ def main():
     # reset
     p = sub.add_parser("reset", help="重置状态")
     p.add_argument("--hard", action="store_true")
+
+    # next-round
+    sub.add_parser("next-round", help="推进到下一轮迭代（上一轮标记 completed）")
 
     # query
     p = sub.add_parser("query", help="搜索状态")
@@ -644,6 +654,18 @@ def main():
             state = load_state(path)
             state = reset_state(state, args.hard, path)
             print(json.dumps({"status": "ok", "message": "状态已重置"}, ensure_ascii=False))
+
+        elif args.command == "next-round":
+            state = load_state()
+            nmax = state.get("nmax", -1)
+            if nmax != -1 and state["round"] + 1 > nmax:
+                raise SafetyBoundaryError(
+                    f"Nmax ({nmax}) 已达（当前第 {state['round']} 轮），禁止开启新轮次。"
+                    "请使用 handoff_report.py 向人移交，或经二阶审计（apply-audit --conclusion restructure）扩展 nmax。"
+                )
+            state = new_round(state)
+            save_state(state)
+            print(json.dumps({"status": "ok", "round": state["round"]}, ensure_ascii=False))
 
         elif args.command == "query":
             state = load_state()
