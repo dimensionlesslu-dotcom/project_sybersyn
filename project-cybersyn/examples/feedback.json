@@ -1,0 +1,16 @@
+{
+  "e_missing": [
+    {
+      "description": "session expiry not routed via gateway",
+      "severity": "high"
+    }
+  ],
+  "e_extra": [],
+  "e_wrong": [
+    {
+      "description": "2 integration tests fail",
+      "severity": "high"
+    }
+  ],
+  "deviation_types": ["A"]
+}

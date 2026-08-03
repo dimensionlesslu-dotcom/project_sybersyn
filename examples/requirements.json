@@ -1,0 +1,10 @@
+[
+  {
+    "id": "R1",
+    "description": "session expiry routes through the gateway"
+  },
+  {
+    "id": "R2",
+    "description": "existing API tests remain green"
+  }
+]

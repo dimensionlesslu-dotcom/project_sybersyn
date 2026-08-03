@@ -160,6 +160,11 @@ def test_s2_l3_full():
     d["rounds"] = rounds
     d["round"] = 3
     d["audit_counter"] = 3
+    d["requirement_evidence"] = [
+        {"requirement_id": "R1", "status": "passed",
+         "evidence": [{"kind": "test", "source": "smoke-test", "summary": "all checks passed",
+                       "captured_at": "2026-01-01T00:00:00+00:00"}], "deviations": []},
+    ]
     Path(state_path).write_text(json.dumps(d, ensure_ascii=False), "utf-8")
 
     # 5. convergence → converged

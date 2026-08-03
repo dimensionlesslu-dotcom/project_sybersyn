@@ -1,0 +1,34 @@
+{
+  "e_missing": [],
+  "e_extra": [],
+  "e_wrong": [],
+  "deviation_types": [],
+  "requirement_evidence": [
+    {
+      "requirement_id": "R1",
+      "status": "passed",
+      "evidence": [
+        {
+          "kind": "test",
+          "source": "tests/test_gateway.py::test_session_expiry_route",
+          "summary": "session expiry is routed through the gateway",
+          "captured_at": "2026-01-01T00:00:00+00:00"
+        }
+      ],
+      "deviations": []
+    },
+    {
+      "requirement_id": "R2",
+      "status": "passed",
+      "evidence": [
+        {
+          "kind": "test",
+          "source": "ci:api-tests",
+          "summary": "existing API tests passed",
+          "captured_at": "2026-01-01T00:01:00+00:00"
+        }
+      ],
+      "deviations": []
+    }
+  ]
+}

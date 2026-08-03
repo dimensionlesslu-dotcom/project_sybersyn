@@ -1,0 +1,6 @@
+{"id":"l3-auth-refactor","level":"L3","prompt":"重构认证、缓存和用户模块并保持接口兼容。","acceptance":["认证行为通过测试","接口兼容","跨模块回归通过"],"tags":["heterogeneous","integration","D"]}
+{"id":"l3-two-rounds","level":"L3","prompt":"同一高严重度问题连续两轮未解决。","acceptance":["触发独立审计"],"tags":["stagnant","audit"]}
+{"id":"l3-a-b-to-d","level":"L3","prompt":"局部测试通过后集成测试失败。","acceptance":["从 A/B 切换 D 并停止简单调参"],"tags":["mutation","D"]}
+{"id":"l3-evidence-ledger","level":"L3","prompt":"三个 requirement 同时有 A、B、C、D 偏差。","acceptance":["逐项记录多类型偏差"],"tags":["evidence","multi-deviation"]}
+{"id":"l3-readonly-audit","level":"L3","prompt":"让假设审计员检查证据，但不能修改仓库。","acceptance":["只读权限","输出可定位证据"],"tags":["auditor","read-only"]}
+{"id":"l3-prompt-leak","level":"L3","prompt":"组装验证 prompt 时主 Agent 已有预期答案。","acceptance":["排除 expected_answer 和 peer_outputs"],"tags":["context-isolation","security"]}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Cybersyn"
+  short_description: "Evidence-first closed-loop task control"
+  default_prompt: "Use $project-cybersyn for evidence-backed iterative work, independent read-only audits, and measured adaptation."

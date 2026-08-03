@@ -7,6 +7,8 @@ on:
 
 jobs:
   test:
+    env:
+      PYTHONUTF8: "1"
     strategy:
       fail-fast: false
       matrix:
@@ -18,5 +20,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install validation dependency
+        run: python -m pip install pyyaml
+      - name: Build minimal skill package
+        run: python tools/build_package.py
+      - name: Check generated package is committed
+        run: git diff --exit-code -- project-cybersyn
       - name: Run smoke test suite
         run: python tools/smoke_test.py
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate Skill frontmatter
+        run: python quick_validate.py project-cybersyn
+      - name: Validate forward-evaluation catalog
+        run: python evals/run_forward_eval.py --observations evals/observations/contract-harness.jsonl --rubric evals/rubrics/default.json --contract-only --format text

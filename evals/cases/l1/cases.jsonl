@@ -1,0 +1,6 @@
+{"id":"l1-clear-edit","level":"L1","prompt":"把 README 中的拼写错误修正。","acceptance":["错误已修正"],"tags":["clear","small-edit"]}
+{"id":"l1-no-python","level":"L1","prompt":"在没有 Python 的环境中修正一个 Markdown 标题。","acceptance":["标题正确"],"tags":["no-python","degraded"]}
+{"id":"l1-user-change","level":"L1","prompt":"先把按钮文案改成‘保存’，后来改成‘提交’。","acceptance":["最终文案为提交"],"tags":["requirement-change","C"]}
+{"id":"l1-keyword-trap","level":"L1","prompt":"说明文档提到 token，但不要求修改认证代码。","acceptance":["不因关键词命中而声称认证已验证"],"tags":["keyword-trap","B"]}
+{"id":"l1-unrepeatable","level":"L1","prompt":"验证一个每次输出不同的随机示例。","acceptance":["标记不可重复验证"],"tags":["non-deterministic","B"]}
+{"id":"l1-constraint","level":"L1","prompt":"只修改指定段落，不改动其他文件。","acceptance":["修改范围受限"],"tags":["constraint","scope"]}

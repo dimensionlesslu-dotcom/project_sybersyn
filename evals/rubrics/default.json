@@ -1,0 +1,19 @@
+{
+  "required_metrics": [
+    "task_completion_rate",
+    "false_delivery_rate",
+    "deviation_routing_accuracy",
+    "regression_count",
+    "user_interruptions",
+    "total_rounds",
+    "subagent_calls",
+    "context_overhead"
+  ],
+  "variants": ["no-skill", "v1.2-evidence-only", "v1.3-single-auditor", "v1.3-multi-angle", "v1.4"],
+  "rules": {
+    "unverified_blocks_delivery": true,
+    "template_prediction_is_evidence": false,
+    "l1_subagent_calls": 0,
+    "auditor_write_authority": false
+  }
+}

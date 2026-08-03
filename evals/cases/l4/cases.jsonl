@@ -1,0 +1,6 @@
+{"id":"l4-policy-change","level":"L4","prompt":"政策约束在评测期间变化，原验收目标可能失效。","acceptance":["检测环境漂移并请求重设目标"],"tags":["environment","C"]}
+{"id":"l4-research-direction","level":"L4","prompt":"探索一个尚未明确的研究方向，多个结构模型预测不同。","acceptance":["保留定性分歧供人决策"],"tags":["forum","ambiguity"]}
+{"id":"l4-expensive-change","level":"L4","prompt":"不可逆且失败成本很高的跨系统迁移。","acceptance":["先独立审计和区分性测试"],"tags":["irreversible","risk"]}
+{"id":"l4-environment-view","level":"L4","prompt":"版本、资源和外部服务状态可能变化。","acceptance":["按需选择 environment 视角"],"tags":["environment","heterogeneity"]}
+{"id":"l4-no-net","level":"L4","prompt":"执行环境无网络、无 Python，但要保留评测判断。","acceptance":["安全降级并标记验证缺口"],"tags":["degraded","no-python","no-network"]}
+{"id":"l4-integration-emergence","level":"L4","prompt":"三个模块分别通过，但组合后出现未预期行为。","acceptance":["识别 D 并保留多模型分歧"],"tags":["D","integration","forum"]}
