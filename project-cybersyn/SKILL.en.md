@@ -32,6 +32,8 @@ When the user explicitly asks to "run the Cybersyn / closed-loop / cybernetics p
 
 ## 0 Complexity Self-Check → Routing
 
+**Minimum Sufficient Control**: Among paths that satisfy requirements, verification needs, and risk constraints, choose the one with the lowest total control complexity. Add steps, state, tools, auditors, or models only when triggered by observable failure, a verification gap, a concrete risk, structural conflict, environmental change, or an explicit user request. Once the trigger clears and no high/medium risk remains, remove higher-order mechanisms that no longer add evidence or reduce risk. “Minimum” never permits omitting required verification, safety controls, or explicit user requirements.
+
 | Level | Criterion (countable) | Example |
 |---|---|---|
 | L1 Simple | ≤2 files/modules, no cross-module dependency, clear requirement | Single-function fix, paragraph polish |
@@ -126,6 +128,7 @@ Triggers: every m rounds, or — same-type deviation unresolved for 2 consecutiv
 2 Did I only choose measurement methods that support my prior, avoiding regions I didn't want to see?
 3 Is this a parameter error or a structural problem? Do I need to change the shape of the execution strategy / increase diversity?
 4 (as needed) What I'm actually doing vs what I claim to be doing — if the gap persists, change the behavior or the claim? (POSIWID)
+5 If in an L4 forum or this audit, and competing goals, explanations, or strategies could materially change the decision: construct the strongest defensible alternative from existing evidence, state its key assumptions, then seek the lowest-cost evidence that distinguishes it from the current option. Do not weaken the alternative, invent facts to strengthen it, or manufacture an alternative when no substantive competition exists.
 ```
 
 Conclusion → keep fine-tuning / reset r(t) / restructure strategy / escalate to forum. **Positive-feedback acceleration is permitted only after r(t) is confirmed.**
@@ -210,7 +213,7 @@ Produce the next-phase r(t) checklist + priorities + reused initial parameters, 
 ## 7 The Forum (L4 / persistent non-convergence)
 
 Human-machine loop, human-led. Five principles:
-1. Build ≥3 **structurally different** models of the same object; the divergence of their predictions is itself a signal.
+1. Build enough **structurally different** models of the same object to cover the material divergences; L4 aims for three by default, but do not create a noncompetitive straw model merely to reach the count. Each model must follow Section 5's Steelman rule and be stated in its strongest defensible, evidence-bounded form; divergence in predictions is itself a signal.
 2. Don't pursue a single correct model.
 3. The machine does quantitative deduction; the human makes qualitative judgment.
 4. Each round explicitly declares its assumption set; the next round first challenges one of them (connects to the second-order audit).
